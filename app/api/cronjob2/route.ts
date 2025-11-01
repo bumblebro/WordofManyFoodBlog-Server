@@ -642,7 +642,6 @@ async function Upload2(randomKeyword) {
         faq: covertedBlog.faq,
         equipments: covertedBlog.equipments,
         slug: `Others/Others/Others/${slugify(covertedBlog.pageTitle)}`,
-        randomKeyword: randomKeyword,
       };
 
       const newBlog = await prisma.foodBlogs.create({ data: reqres });
@@ -677,6 +676,7 @@ async function Upload2(randomKeyword) {
               newBlog.title
             )}&cover=${encodeURIComponent(newBlog.imageurl)}`,
         },
+        randomKeyword: randomKeyword,
       };
 
       console.log("✅ UPLOAD SUCCESSFUL:", newBlog.title);
