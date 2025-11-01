@@ -705,12 +705,26 @@ async function Upload2(query) {
 
 // ------------------- API Route -------------------
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(req.url);
-    const query = searchParams.get("q");
-    console.log(`📦 Received query:`, query);
-    const data = await Upload2(query);
+    // const { searchParams } = new URL(req.url);
+    // const query = searchParams.get("q");
+    // console.log(`📦 Received query:`, query);
+    // Parse the JSON array from env
+    const keywords = JSON.parse(process.env.NEXT_PUBLIC_KEYWORDS || "[]");
+
+    if (!Array.isArray(keywords) || keywords.length === 0) {
+      throw new Error(
+        "NEXT_PUBLIC_KEYWORDS is not a valid JSON array or is empty"
+      );
+    }
+
+    // Pick a random keyword
+    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+    console.log(`📦 Selected random keyword:`, randomKeyword);
+
+    // Use your Upload2 logic
+    const data = await Upload2(randomKeyword);
 
     return Response.json(data);
   } catch (error) {
