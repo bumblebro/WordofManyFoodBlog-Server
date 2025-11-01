@@ -713,23 +713,27 @@ export async function GET() {
     // console.log(`📦 Received query:`, query);
     // Parse the JSON array from env
     // const keywords = JSON.parse(process.env.NEXT_PUBLIC_KEYWORDS || "[]");
-    let raw = process.env.NEXT_PUBLIC_KEYWORDS || "[]";
+    const envVar = process.env.NEXT_PUBLIC_KEYWORDS || "[]";
+    let keywords: string[] = [];
 
-    // handle double-escaped JSON (common in Coolify or Docker)
-    if (raw.startsWith('"') || raw.startsWith("'")) {
+    try {
+      // Try parsing normally first
+      keywords = JSON.parse(envVar);
+    } catch {
+      // If it fails, try unescaping and parsing again
       try {
-        raw = JSON.parse(raw); // removes extra quotes/backslashes
-      } catch {
-        /* ignore, fallback below */
+        const cleaned = envVar
+          .replace(/^"+|"+$/g, "") // remove surrounding quotes
+          .replace(/\\"/g, '"'); // unescape quotes
+        keywords = JSON.parse(cleaned);
+      } catch (err) {
+        console.error("⚠️ Failed to parse even after cleaning:", err);
+        throw new Error("Invalid NEXT_PUBLIC_KEYWORDS format");
       }
     }
 
-    const keywords = JSON.parse(raw);
-
     if (!Array.isArray(keywords) || keywords.length === 0) {
-      throw new Error(
-        "NEXT_PUBLIC_KEYWORDS is not a valid JSON array or is empty"
-      );
+      throw new Error("NEXT_PUBLIC_KEYWORDS is empty or invalid");
     }
 
     // Pick a random keyword
