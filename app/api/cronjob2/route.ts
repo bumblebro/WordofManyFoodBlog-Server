@@ -572,10 +572,10 @@ async function image(query) {
 
 // ------------------- MAIN PROCESS -------------------
 
-async function Upload2(query) {
+async function Upload2(randomKeyword) {
   async function startProcess() {
     try {
-      const blogs = await UPLOAD({ query });
+      const blogs = await UPLOAD({ randomKeyword });
       const covertedBlog = JSON.parse(blogs);
 
       // Validation
@@ -642,6 +642,7 @@ async function Upload2(query) {
         faq: covertedBlog.faq,
         equipments: covertedBlog.equipments,
         slug: `Others/Others/Others/${slugify(covertedBlog.pageTitle)}`,
+        randomKeyword: randomKeyword,
       };
 
       const newBlog = await prisma.foodBlogs.create({ data: reqres });
