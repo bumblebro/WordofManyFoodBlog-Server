@@ -712,7 +712,19 @@ export async function GET() {
     // const query = searchParams.get("q");
     // console.log(`📦 Received query:`, query);
     // Parse the JSON array from env
-    const keywords = JSON.parse(process.env.NEXT_PUBLIC_KEYWORDS || "[]");
+    // const keywords = JSON.parse(process.env.NEXT_PUBLIC_KEYWORDS || "[]");
+    let raw = process.env.NEXT_PUBLIC_KEYWORDS || "[]";
+
+    // handle double-escaped JSON (common in Coolify or Docker)
+    if (raw.startsWith('"') || raw.startsWith("'")) {
+      try {
+        raw = JSON.parse(raw); // removes extra quotes/backslashes
+      } catch {
+        /* ignore, fallback below */
+      }
+    }
+
+    const keywords = JSON.parse(raw);
 
     if (!Array.isArray(keywords) || keywords.length === 0) {
       throw new Error(
