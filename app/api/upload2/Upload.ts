@@ -45,6 +45,7 @@ export default async function UPLOAD({ query }: { query: string }) {
   const formattedDate = today.toLocaleDateString("en-US", options);
 
   console.log(formattedDate); // Output̀: "September 19, 2024"
+  console.log("keyord from Upload", query);
 
   try {
     // const body = await req.json();
