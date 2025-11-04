@@ -188,7 +188,7 @@ The structure of the blog should follow this format:
    - Include a relevant quote from the author that reflects the theme of the blog and sets the tone.
 
 2. **Page Title:**
-   - The main title of the blog post with keyword "${query}".
+   - The main title of the blog post".
 
 3. **Image Query:**
    - Generate a query for the main image that aligns with the blog content.
