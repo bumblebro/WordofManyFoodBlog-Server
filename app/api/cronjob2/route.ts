@@ -627,7 +627,7 @@ async function Upload2(randomKeyword) {
       // Upload to DB
       const reqres = {
         section: "Others",
-        title: await slugify(covertedBlog.pageTitle),
+        title: slugify(covertedBlog.pageTitle),
         imagealt: covertedBlog.imageQuery,
         imageurl: mainImg.url,
         subsection: "Others",
@@ -645,7 +645,7 @@ async function Upload2(randomKeyword) {
       };
       // return { success: true, data: reqres };
 
-      console.log(`title`, await slugify(covertedBlog.pageTitle));
+      console.log(`title`, slugify(covertedBlog.pageTitle));
       const newBlog = await prisma.foodBlogs.create({ data: reqres });
       await prisma.$disconnect();
 
