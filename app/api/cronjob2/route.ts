@@ -627,7 +627,7 @@ async function Upload2(randomKeyword) {
       // Upload to DB
       const reqres = {
         section: "Others",
-        title: slugify(covertedBlog.pageTitle),
+        title: await slugify(covertedBlog.pageTitle),
         imagealt: covertedBlog.imageQuery,
         imageurl: mainImg.url,
         subsection: "Others",
@@ -693,11 +693,12 @@ async function Upload2(randomKeyword) {
       }
     } catch (error) {
       console.error("⚠️ Error occurred, retrying...", error);
+      failedCount++;
       console.log("failed count", failedCount);
       if (failedCount == 2) {
+        await sleep(300000000000);
         return null;
       } else {
-        failedCount++;
         await sleep(30000);
         return await startProcess();
       }
