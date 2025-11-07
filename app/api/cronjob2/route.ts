@@ -722,7 +722,7 @@ async function Upload2(randomKeyword) {
       failedCount++;
       console.log("failed count", failedCount);
       if (failedCount == 2) {
-        await sleep(300000);
+        await sleep(2147483);
         // return null;
       } else {
         await sleep(30000);
