@@ -682,7 +682,7 @@ async function Upload2(randomKeyword) {
       };
 
       console.log("✅ UPLOAD SUCCESSFUL:", newBlog.title);
-
+      failedCount = 0;
       return responseObject;
 
       successCount++;
@@ -698,8 +698,8 @@ async function Upload2(randomKeyword) {
       failedCount++;
       console.log("failed count", failedCount);
       if (failedCount == 2) {
-        await sleep(300000000000);
-        return null;
+        await sleep(300000);
+        // return null;
       } else {
         await sleep(30000);
         return await startProcess();
