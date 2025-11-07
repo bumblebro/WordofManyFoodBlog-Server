@@ -602,9 +602,13 @@ async function Upload2(randomKeyword) {
         return await startProcess();
       }
 
-      const mainImg = await image(covertedBlog.imageQuery);
-      if (!mainImg?.url) throw new Error("Main image fetch failed");
-
+      let mainImg = await image(covertedBlog.imageQuery);
+      if (!mainImg?.url) {
+        console.log("❌ No valid image found for:", covertedBlog.imageQuery);
+        console.warn("⚠️ Main image failed — retrying with 'food' suffix...");
+        mainImg = await image(`${covertedBlog.imageQuery} food`);
+        if (!mainImg?.url) throw new Error("Main image fetch failed");
+      }
       // Step images
       const results = await Promise.all(
         covertedBlog.recipeDescription.detailedDescription.map(async (item) => {
