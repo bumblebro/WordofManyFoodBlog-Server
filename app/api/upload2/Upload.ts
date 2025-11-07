@@ -38,8 +38,6 @@ export default async function UPLOAD({ query }: { query: string }) {
   // const selectedApiKey = apiKeys[randomIndex];
   // console.log(`API Used`, randomIndex, selectedApiKey);
 
-  return;
-
   const genAI = new GoogleGenerativeAI(randomApi || "");
 
   // const apiKeys = process.env.NEXT_PUBLIC_GEMINIAI_API_URL;
