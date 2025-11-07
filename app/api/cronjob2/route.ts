@@ -644,6 +644,8 @@ async function Upload2(randomKeyword) {
         slug: `Others/Others/Others/${slugify(covertedBlog.pageTitle)}`,
       };
       // return { success: true, data: reqres };
+
+      console.log(`title`, await slugify(covertedBlog.pageTitle));
       const newBlog = await prisma.foodBlogs.create({ data: reqres });
       await prisma.$disconnect();
 
