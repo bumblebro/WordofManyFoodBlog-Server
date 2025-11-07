@@ -18,17 +18,29 @@ export default async function UPLOAD({ query }: { query: string }) {
 
   //const apiKeys = ["AIzaSyAplveCGzwidcNP5pNzoSBuwiLoattwFck"];
 
-  const apiKeys = [
-    process.env.NEXT_PUBLIC_GEMINIAI_API_URL,
-    process.env.NEXT_PUBLIC_GEMINIAI_API_URL1,
-  ];
+  const apiKeys = process.env.NEXT_PUBLIC_GEMINIAI_API_URL?.split("|") || [];
 
-  const randomIndex = Math.floor(Math.random() * apiKeys.length);
+  if (!Array.isArray(apiKeys) || apiKeys.length === 0) {
+    throw new Error("NEXT_PUBLIC_KEYWORDS is empty or invalid");
+  }
 
-  const selectedApiKey = apiKeys[randomIndex];
-  console.log(`API Used`, randomIndex, selectedApiKey);
+  // Pick a random keyword
+  const randomApi = apiKeys[Math.floor(Math.random() * apiKeys.length)];
+  console.log(`📦 Selected random Api:`, randomApi);
 
-  const genAI = new GoogleGenerativeAI(selectedApiKey || "");
+  // const apiKeys = [
+  //   process.env.NEXT_PUBLIC_GEMINIAI_API_URL,
+  //   process.env.NEXT_PUBLIC_GEMINIAI_API_URL1,
+  // ];
+
+  // const randomIndex = Math.floor(Math.random() * apiKeys.length);
+
+  // const selectedApiKey = apiKeys[randomIndex];
+  // console.log(`API Used`, randomIndex, selectedApiKey);
+
+  return;
+
+  const genAI = new GoogleGenerativeAI(randomApi || "");
 
   // const apiKeys = process.env.NEXT_PUBLIC_GEMINIAI_API_URL;
 
