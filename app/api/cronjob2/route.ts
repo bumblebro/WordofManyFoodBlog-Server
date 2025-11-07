@@ -607,7 +607,14 @@ async function Upload2(randomKeyword) {
         console.log("❌ No valid image found for:", covertedBlog.imageQuery);
         console.warn("⚠️ Main image failed — retrying with 'food' suffix...");
         mainImg = await image(`${covertedBlog.imageQuery} food`);
-        if (!mainImg?.url) throw new Error("Main image fetch failed");
+
+        if (!mainImg?.url) {
+          console.warn(
+            "⚠️ Main image failed again — retrying with 'recipe dish' suffix..."
+          );
+          mainImg = await image(`${covertedBlog.imageQuery} recipe dish`);
+          if (!mainImg?.url) throw new Error("Main image fetch failed");
+        }
       }
       // Step images
       const results = await Promise.all(
@@ -624,6 +631,14 @@ async function Upload2(randomKeyword) {
             console.log("❌ No step image found for:", item.imageQuery);
             console.warn("⚠️ Retrying with 'recipe step' suffix...");
             stepImg = await image(`${item.imageQuery} recipe step`);
+
+            if (!stepImg?.url) {
+              console.warn(
+                "⚠️ Step image failed again — retrying with 'food cooking step' suffix..."
+              );
+              stepImg = await image(`${item.imageQuery} food cooking step`);
+              if (!stepImg?.url) throw new Error("Step image fetch failed");
+            }
           }
           return {
             description: item.description,
