@@ -619,7 +619,12 @@ async function Upload2(randomKeyword) {
               alt: "null",
             };
           }
-          const stepImg = await image(item.imageQuery);
+          let stepImg = await image(item.imageQuery);
+          if (!stepImg?.url) {
+            console.log("❌ No step image found for:", item.imageQuery);
+            console.warn("⚠️ Retrying with 'recipe step' suffix...");
+            stepImg = await image(`${item.imageQuery} recipe step`);
+          }
           return {
             description: item.description,
             url: stepImg?.url || "null",
