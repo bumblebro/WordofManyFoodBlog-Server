@@ -693,9 +693,14 @@ async function Upload2(randomKeyword) {
       }
     } catch (error) {
       console.error("⚠️ Error occurred, retrying...", error);
-      failedCount++;
-      await sleep(30000);
-      return await startProcess();
+      console.log("failed count", failedCount);
+      if (failedCount == 2) {
+        return null;
+      } else {
+        failedCount++;
+        await sleep(30000);
+        return await startProcess();
+      }
     }
   }
 
