@@ -290,7 +290,7 @@ async function Upload2(randomKeyword: any) {
         covertedBlog.pageTitle.includes("Image Query")
       )
         throw new Error("Invalid title");
-//@ts-ignore
+      //@ts-ignore
       covertedBlog.recipeDescription.detailedDescription.forEach((item) => {
         if (
           item.description.includes("[") ||
@@ -463,11 +463,20 @@ export async function GET() {
     // Use your Upload2 logic
     const data = await Upload2(randomKeyword);
 
-    return Response.json(data);
+    // return Response.json(data);
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("❌ API ERROR:", error);
     //@ts-ignore
-    return Response.json({ error: error?.message || "Something went wrong" });
+    // return Response.json({ error: error?.message || "Something went wrong" });
+    const message = (error as Error)?.message || "Something went wrong";
+    return new Response(JSON.stringify({ error: message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
