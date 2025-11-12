@@ -1,3 +1,5 @@
+//@ts-ignore
+
 export const revalidate = 0;
 
 import { subSections } from "@/libs/Section";
@@ -19,19 +21,19 @@ let failedCount = 0;
 const REGEX = /\["(\bhttps?:\/\/[^"]+)",(\d+),(\d+)\],null/g;
 
 // Sleep helper
-function sleep(ms) {
+function sleep(ms: any) {
   console.log(`⏳ Waiting ${ms / 1000 / 60} min before next request...`);
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Converts unicode escapes to normal strings
-const unicodeToString = (content) =>
-  content.replace(/\\u[\dA-F]{4}/gi, (match) =>
+const unicodeToString = (content: any) =>
+  content.replace(/\\u[\dA-F]{4}/gi, (match: any) =>
     String.fromCharCode(parseInt(match.replace(/\\u/g, ""), 16))
   );
 
 // Scrape image URLs from Google Images
-async function fetchImageUrls(searchTerm) {
+async function fetchImageUrls(searchTerm: any) {
   if (!searchTerm || typeof searchTerm !== "string")
     throw new TypeError("searchTerm must be a string.");
 
@@ -86,7 +88,7 @@ async function fetchImageUrls(searchTerm) {
 }
 
 // Get a valid image URL
-async function image(query) {
+async function image(query: any) {
   try {
     // const results = await fetchImageUrls(query);
     const results = await gis(query);
@@ -270,7 +272,7 @@ async function image(query) {
 //     }
 //   }
 
-async function Upload2(randomKeyword) {
+async function Upload2(randomKeyword: any) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       console.log(
@@ -278,6 +280,7 @@ async function Upload2(randomKeyword) {
       );
 
       const blogs = await UPLOAD({ query: randomKeyword });
+      //@ts-ignore
       const covertedBlog = JSON.parse(blogs);
 
       // ---------- Validation ----------
@@ -287,7 +290,7 @@ async function Upload2(randomKeyword) {
         covertedBlog.pageTitle.includes("Image Query")
       )
         throw new Error("Invalid title");
-
+//@ts-ignore
       covertedBlog.recipeDescription.detailedDescription.forEach((item) => {
         if (
           item.description.includes("[") ||
@@ -315,6 +318,7 @@ async function Upload2(randomKeyword) {
 
       // ---------- Step Images ----------
       const results = await Promise.all(
+        //@ts-ignore
         covertedBlog.recipeDescription.detailedDescription.map(async (item) => {
           if (!item.imageQuery || item.imageQuery === "null") {
             return {
@@ -399,6 +403,7 @@ async function Upload2(randomKeyword) {
       console.log("✅ Upload successful:", newBlog.title);
       return responseObject; // Exit loop on success
     } catch (err) {
+      //@ts-ignore
       console.warn(`⚠️ Attempt ${attempt} failed:`, err.message);
       if (attempt === 3) {
         console.error("❌ Process failed twice — aborting.");
@@ -461,7 +466,8 @@ export async function GET() {
     return Response.json(data);
   } catch (error) {
     console.error("❌ API ERROR:", error);
-    return Response.json({ error: error.message || "Something went wrong" });
+    //@ts-ignore
+    return Response.json({ error: error?.message || "Something went wrong" });
   }
 }
 
