@@ -288,23 +288,26 @@ async function Upload2(randomKeyword: any) {
         covertedBlog.pageTitle.includes("[") ||
         covertedBlog.pageTitle.includes("]") ||
         covertedBlog.pageTitle.includes("Image Query")
-      )
+      ) {
         throw new Error("Invalid title");
+      }
+
       //@ts-ignore
       covertedBlog.recipeDescription.detailedDescription.forEach((item) => {
         if (
           item.description.includes("[") ||
           item.description.includes("]") ||
           item.description.includes("Image Query")
-        )
+        ) {
           throw new Error("Invalid description");
+        }
       });
 
       // ---------- Main Image ----------
       if (!covertedBlog.imageQuery || covertedBlog.imageQuery === "null") {
         console.log("❌ Missing image query — retrying in 30 sec...");
         await sleep(30000);
-        continue; // retry loop
+        continue; // skip to the next attempt early
       }
 
       let mainImg = await image(covertedBlog.imageQuery);
@@ -313,7 +316,9 @@ async function Upload2(randomKeyword: any) {
         mainImg = await image(`${covertedBlog.imageQuery} food`);
         if (!mainImg?.url)
           mainImg = await image(`${covertedBlog.imageQuery} recipe dish`);
-        if (!mainImg?.url) throw new Error("Main image fetch failed");
+        if (!mainImg?.url) {
+          throw new Error("Main image fetch failed");
+        }
       }
 
       // ---------- Step Images ----------
@@ -321,11 +326,7 @@ async function Upload2(randomKeyword: any) {
         //@ts-ignore
         covertedBlog.recipeDescription.detailedDescription.map(async (item) => {
           if (!item.imageQuery || item.imageQuery === "null") {
-            return {
-              description: item.description,
-              url: "null",
-              alt: "null",
-            };
+            return { description: item.description, url: "null", alt: "null" };
           }
 
           let stepImg = await image(item.imageQuery);
@@ -334,7 +335,9 @@ async function Upload2(randomKeyword: any) {
             stepImg = await image(`${item.imageQuery} recipe step`);
             if (!stepImg?.url)
               stepImg = await image(`${item.imageQuery} food cooking step`);
-            if (!stepImg?.url) throw new Error("Step image fetch failed");
+            if (!stepImg?.url) {
+              throw new Error("Step image fetch failed");
+            }
           }
 
           return {
@@ -368,7 +371,7 @@ async function Upload2(randomKeyword: any) {
       console.log(`📝 Creating DB entry for:`, slugify(covertedBlog.pageTitle));
       const newBlog = await prisma.foodBlogs.create({ data: reqres });
 
-      // ---------- Response object ----------
+      // ---------- Construct Response ----------
       const domain = process.env.NEXT_PUBLIC_BASE_API_URL;
       const author = covertedBlog.author || "Admin";
       const url = `${domain}/Others/Others/Others/${slugify(
@@ -401,20 +404,25 @@ async function Upload2(randomKeyword: any) {
       };
 
       console.log("✅ Upload successful:", newBlog.title);
-      return responseObject; // Exit loop on success
+      return responseObject; // **Important**: return here — exit the loop and function on success
     } catch (err) {
       //@ts-ignore
       console.warn(`⚠️ Attempt ${attempt} failed:`, err.message);
+
       if (attempt === 3) {
         console.error("❌ Process failed twice — aborting.");
-        throw new Error("Process failed twice, aborting.");
+        throw err; // **Important**: throw the error to propagate it out of the function
       }
+
       console.log("⏳ Retrying in 30 seconds...");
       await sleep(30000);
     } finally {
       await prisma.$disconnect();
     }
   }
+
+  // **Optional**: If loop ends without return or throw, you might throw to signal something went wrong
+  throw new Error("Upload2 failed after all attempts");
 }
 
 //   // ✅ Important: return the awaited promise chain
