@@ -972,7 +972,7 @@ Make sure the content is thoroughly researched and provides value to readers. Av
     const response1 = await result.response;
     // console.log(response);
     const data1 = response1.text();
-    console.log(data1);
+    // console.log(data1);
     // console.log(title, section, subSection, subSubSection);
     return data1;
   } catch (error) {
