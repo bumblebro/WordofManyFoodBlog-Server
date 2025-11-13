@@ -968,6 +968,7 @@ Make sure the content is thoroughly researched and provides value to readers. Av
     return data1;
   } catch (error) {
     // console.log(`error message`, error?.errorDetails[1]?.message);
+    //@ts-ignore
     return error?.errorDetails[1]?.message;
   }
 }
