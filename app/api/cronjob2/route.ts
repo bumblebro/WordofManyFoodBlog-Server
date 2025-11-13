@@ -22,7 +22,7 @@ const REGEX = /\["(\bhttps?:\/\/[^"]+)",(\d+),(\d+)\],null/g;
 
 // Sleep helper
 function sleep(ms: any) {
-  console.log(`⏳ Waiting ${ms / 1000 / 60} min before next request...`);
+  // console.log(`⏳ Waiting ${ms / 1000 / 60} min before next request...`);
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -93,7 +93,7 @@ async function image(query: any) {
     // const results = await fetchImageUrls(query);
     const results = await gis(query);
     // console.log(results.slice(0, 10));
-    console.log(`Image results`, results);
+    // console.log(`Image results`, results);
     const url = results.find((item) => {
       const isHttps = item.url.startsWith("https:");
       const isNotFromBlockedSource =
@@ -103,6 +103,7 @@ async function image(query: any) {
       const hasImageExtension = /\.(jpe?g|png|gif|webp|bmp)$/i.test(item.url);
       return isHttps && isNotFromBlockedSource && hasImageExtension;
     });
+    // console.log(`Got Image`, url);
     return url;
   } catch (e) {
     console.error(e);
@@ -410,7 +411,7 @@ async function Upload2(randomKeyword: any) {
       console.warn(`⚠️ Attempt ${attempt} failed:`, err.message);
 
       if (attempt === 3) {
-        console.error("❌ Process failed twice — aborting.");
+        console.error("❌ Process failed thrice — aborting.");
         throw err; // **Important**: throw the error to propagate it out of the function
       }
 
@@ -434,12 +435,24 @@ async function Upload2(randomKeyword: any) {
 
 export async function GET() {
   try {
+    console.warn(
+      "✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅"
+    );
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const formattedDate = today.toLocaleDateString("en-US", options);
+
+    console.log(formattedDate); // Output̀: "September 19, 2024"
     // const { searchParams } = new URL(req.url);
     // const query = searchParams.get("q");
     // console.log(`📦 Received query:`, query);
     // Parse the JSON array from env
     // const keywords = JSON.parse(process.env.NEXT_PUBLIC_KEYWORDS || "[]");
-    const envVar = process.env.NEXT_PUBLIC_KEYWORDS || "[]";
+    // const envVar = process.env.NEXT_PUBLIC_KEYWORDS || "[]";
     // let keywords: string[] = [];
 
     // try {
@@ -471,15 +484,27 @@ export async function GET() {
     // Use your Upload2 logic
     const data = await Upload2(randomKeyword);
 
+    console.warn(
+      "✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅"
+    );
     // return Response.json(data);
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("❌ API ERROR:", error);
+    // console.error("❌ API ERROR:", error);
+    // const err = error as Error;
+    // const message = err.message || "Unknown error";
+    // const stackLine = err.stack ? err.stack.split("\n")[1].trim() : "";
+    // console.error(
+    // `❌ API ERROR: ${message}${stackLine ? ` at ${stackLine}` : ""}`
+    // );
     //@ts-ignore
     // return Response.json({ error: error?.message || "Something went wrong" });
+    console.warn(
+      "✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅"
+    );
     const message = (error as Error)?.message || "Something went wrong";
     return new Response(JSON.stringify({ error: message }), {
       status: 500,
