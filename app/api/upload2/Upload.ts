@@ -46,7 +46,6 @@ export default async function UPLOAD({ query }: { query: string }) {
 
   // const genAI = new GoogleGenerativeAI(apiKeys || "");
 
-
   console.log("Asking Ai for blog using title keyword: ", query);
 
   try {
