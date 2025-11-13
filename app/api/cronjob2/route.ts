@@ -415,8 +415,8 @@ async function Upload2(randomKeyword: any) {
         throw err; // **Important**: throw the error to propagate it out of the function
       }
 
-      console.log("⏳ Retrying in 30 seconds...");
-      await sleep(30000);
+      console.log("⏳ Retrying in 90 seconds...");
+      await sleep(90000);
     } finally {
       await prisma.$disconnect();
     }
