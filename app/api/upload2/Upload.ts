@@ -952,7 +952,7 @@ Make sure the content is thoroughly researched and provides value to readers. Av
     };
 
     const model2 = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: schema,
@@ -966,7 +966,7 @@ Make sure the content is thoroughly researched and provides value to readers. Av
     // console.log(title, section, subSection, subSubSection);
     return data1;
   } catch (error) {
-    // console.log(`error message`, error?.errorDetails[1]?.message);
+    console.log(`error message`, error);
     //@ts-ignore
     return error?.errorDetails[1]?.message;
   }
