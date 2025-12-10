@@ -975,14 +975,6 @@ Make sure the content is thoroughly researched and provides value to readers. Av
               description: "Primary keywords for SEO",
               items: {
                 type: SchemaType.STRING,
-              },
-              nullable: false,
-            },
-            secondaryKeywords: {
-              type: SchemaType.ARRAY,
-              description: "Secondary keywords for SEO",
-              items: {
-                type: SchemaType.STRING,
                 enum: [
                   "Easy Recipes",
                   "Quick & Simple Meals",
@@ -1036,6 +1028,14 @@ Make sure the content is thoroughly researched and provides value to readers. Av
                   "Coffee & Tea Recipes",
                   "Mocktails & Drinks",
                 ],
+              },
+              nullable: false,
+            },
+            secondaryKeywords: {
+              type: SchemaType.ARRAY,
+              description: "Secondary keywords for SEO",
+              items: {
+                type: SchemaType.STRING,
               },
               nullable: false,
             },
