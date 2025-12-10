@@ -402,6 +402,7 @@ async function Upload2(randomKeyword: any) {
             )}&cover=${encodeURIComponent(newBlog.imageurl)}`,
         },
         randomKeyword,
+        boardName: covertedBlog.seo.primaryKeywords[0],
       };
 
       console.log("✅ Upload successful:", newBlog.title);
